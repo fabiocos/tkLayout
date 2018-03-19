@@ -1237,9 +1237,7 @@ namespace insur {
 		    std::string	albox_layer_tag	= mnameBase.str() + "_albox_layer";
 
 		    // slap overlap crystal to crystal
-		    float overlap =  crystalWidth - alveolaWidth; //(4 * alveolaWidth - 4 * crystalWidth) / 3.0;
-		    std::cout << "OVERLAP " << overlap << std::endl;
-		    std::cout << "aWidth " << alveolaWidth << std::endl;
+		    float overlap =  crystalWidth - alveolaWidth; 
 
 		    // filling gaps in the module.
 		    // 1. aluminum with -1 overlap
