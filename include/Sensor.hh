@@ -45,25 +45,32 @@ public:
   ReadonlyProperty<double, AutoDefault> crystalLength;
   ReadonlyProperty<double, AutoDefault> crystalThickness;
   ReadonlyProperty<double, AutoDefault> crystalTiltAngle;
-  
+  ReadonlyProperty<int, AutoDefault> passiveComponentLayout;
+  ReadonlyProperty<double, AutoDefault> passiveLayout1TopLayerThickness;
+  ReadonlyProperty<double, AutoDefault> passiveLayout1BotLayerThickness;
+  ReadonlyProperty<double, AutoDefault> passiveLayout2LayerThickness;
  Sensor() :
-  numStripsAcross("numStripsAcross", parsedOnly()),
-    pitchEstimate("pitchEstimate", parsedOnly()),
-    numSegments("numSegments", parsedOnly()),
-    stripLengthEstimate("stripLengthEstimate", parsedOnly()),
-    numROCX("numROCX", parsedOnly()),
-    numROCY("numROCY", parsedOnly()),
-    sensorThickness("sensorThickness", parsedAndChecked()),
-    type("sensorType", parsedOnly(), SensorType::None),
-    powerPerChannel("powerPerChannel", parsedOnly()),
-    crystalLayout("crystalLayout", parsedOnly()),
-    numCrystalsX("numCrystalsX", parsedOnly()),
-    numCrystalsY("numCrystalsY", parsedOnly()),
-    alveolaShift("alveolaShift", parsedOnly()),
-    crystalWidth("crystalWidth", parsedOnly()),
-    crystalLength("crystalLength", parsedOnly()),
-    crystalThickness("crystalThickness", parsedOnly()),
-    crystalTiltAngle("crystalTiltAngle", parsedOnly())   
+   numStripsAcross("numStripsAcross", parsedOnly()),
+   pitchEstimate("pitchEstimate", parsedOnly()),
+   numSegments("numSegments", parsedOnly()),
+   stripLengthEstimate("stripLengthEstimate", parsedOnly()),
+   numROCX("numROCX", parsedOnly()),
+   numROCY("numROCY", parsedOnly()),
+   sensorThickness("sensorThickness", parsedAndChecked()),
+   type("sensorType", parsedOnly(), SensorType::None),
+   powerPerChannel("powerPerChannel", parsedOnly()),
+   crystalLayout("crystalLayout", parsedOnly()),
+   numCrystalsX("numCrystalsX", parsedOnly()),
+   numCrystalsY("numCrystalsY", parsedOnly()),
+   alveolaShift("alveolaShift", parsedOnly()),
+   crystalWidth("crystalWidth", parsedOnly()),
+   crystalLength("crystalLength", parsedOnly()),
+   crystalThickness("crystalThickness", parsedOnly()),
+   crystalTiltAngle("crystalTiltAngle", parsedOnly()) ,
+   passiveComponentLayout("passiveComponentLayout", parsedOnly()),
+   passiveLayout1TopLayerThickness("passiveLayout1TopLayerThickness", parsedOnly()),
+   passiveLayout1BotLayerThickness("passiveLayout1BotLayerThickness", parsedOnly()),
+   passiveLayout2LayerThickness("passiveLayout2LayerThickness", parsedOnly())
       {}
 
   void parent(const DetectorModule* m) { parent_ = m; }

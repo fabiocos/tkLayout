@@ -28,7 +28,8 @@ Sensor 1 {
   sensorType largepix
 
   crystalLayout 2
-  
+  passiveComponentLayout 2  
+
   numROCX 1             // Only one chip in total
   numROCY 1
   
