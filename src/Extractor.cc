@@ -1117,23 +1117,12 @@ namespace insur {
 		      // be in the module in units of crystal size 
 		      double midX = numCrystalsX / 2 - 0.5;
 		      pos.trans.dx = (i - midX) * alveolaWidth;
-		      
+
+		      // slab geometry needs special placement of bars
 		      if (crystalLayout == 2) {
-			float overlap =  (4.0 / 3.0 ) * (crystalWidth - alveolaWidth); 
-			double shift_origin = (4 * crystalWidth - 3 * overlap)/ 2.0;
-			pos.trans.dx = (-1 * shift_origin) + (1.0 * i + 0.5 )*crystalWidth - (i * overlap); 
-			// if (i == 0) {
-			//   pos.trans.dx = (-1 * shift_origin) + (0.5 * crystalWidth ); 
-			// }
-			// else if(i == 1) {
-			//   pos.trans.dx = (-1 * shift_origin) + (1.5 * crystalWidth - overlap); 
-			// }
-			// else if( i == 2) {
-			//   pos.trans.dx = (-1 * shift_origin) + (2.5 * crystalWidth - 2.0 *overlap); 
-			// }
-			// else {
-			//   pos.trans.dx = (-1 * shift_origin) + (3.5 * crystalWidth - 3.0 *overlap); 
-			// }
+			float	overlap	     = (4.0 / 3.0 ) * (crystalWidth - alveolaWidth); 
+			double	shift_origin = (4 * crystalWidth - 3 * overlap)/ 2.0;
+			pos.trans.dx	     = (-1 * shift_origin) + (1.0 * i + 0.5 ) * crystalWidth - (i * overlap); 
 		      }
 
 		      double midY = numCrystalsY / 2 - 0.5;
