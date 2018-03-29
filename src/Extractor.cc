@@ -1246,8 +1246,6 @@ namespace insur {
 
 		    // slap overlap crystal to crystal
 		    float overlap =  (4.0 / 3.0 ) * (crystalWidth - alveolaWidth); 
-		    std::cout << "OVERLAP: " << overlap << std::endl;
-		    std::cout << "ALVEOLA WIDTH: " << alveolaWidth << std::endl;
 		    
 		    // filling gaps in the module.
 		    // 1. aluminum with -1 overlap
