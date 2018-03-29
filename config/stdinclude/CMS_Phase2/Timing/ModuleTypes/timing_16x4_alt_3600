@@ -37,10 +37,10 @@ Sensor 1 {
   numCrystalsX 4       // 184.48mm / 16 = 11.53mm
   numCrystalsY 16        // 46.5mm / 4 = 11.625mm
   
-  alveolaShift 1.30      // crystals are placed at +Z = 1 mm and -Z = 1 mm alternatively.
+  alveolaShift 1.80      // crystals are placed at +Z = 1 mm and -Z = 1 mm alternatively.
   
-  crystalWidth  47.1 // no over laps is 46.12 for 184.48
-  crystalLength 2.90
+  crystalWidth  46.87
+  crystalLength 2.90625
   crystalThickness 3.60
   crystalTiltAngle 0.0 // rotation along X axis
   
