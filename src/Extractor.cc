@@ -1117,6 +1117,14 @@ namespace insur {
 		      // be in the module in units of crystal size 
 		      double midX = numCrystalsX / 2 - 0.5;
 		      pos.trans.dx = (i - midX) * alveolaWidth;
+
+		      // slab geometry needs special placement of bars
+		      if (crystalLayout == 2) {
+			float	overlap	     = (4.0 / 3.0 ) * (crystalWidth - alveolaWidth); 
+			double	shift_origin = (4 * crystalWidth - 3 * overlap)/ 2.0;
+			pos.trans.dx	     = (-1 * shift_origin) + (1.0 * i + 0.5 ) * crystalWidth - (i * overlap); 
+		      }
+
 		      double midY = numCrystalsY / 2 - 0.5;
 		      pos.trans.dy = (j - midY) * alveolaLength;
 
@@ -1237,8 +1245,8 @@ namespace insur {
 		    std::string	albox_layer_tag	= mnameBase.str() + "_albox_layer";
 
 		    // slap overlap crystal to crystal
-		    float overlap =  crystalWidth - alveolaWidth; 
-
+		    float overlap =  (4.0 / 3.0 ) * (crystalWidth - alveolaWidth); 
+		    
 		    // filling gaps in the module.
 		    // 1. aluminum with -1 overlap
 		    shape.type	   = bx;
@@ -1310,7 +1318,7 @@ namespace insur {
 
 		    // POSITIONING OF THE 4 AL. BLOCKS FILLING THE SPACE
 		    // bottom long aluminum block
-		    float   origin_shift = (crystalWidth * numCrystalsX - 3.0 * overlap) / 2.0;
+		    float   origin_shift = ((crystalWidth * numCrystalsX) - (3.0 * overlap)) / 2.0;
 		    pos.trans.dy	 = 0;
 		    pos.trans.dx	 = (-1 * origin_shift) + ((crystalWidth - overlap) / 2.0);
 		    pos.trans.dz	 = crystalThickness / 2.0;
@@ -1338,7 +1346,7 @@ namespace insur {
 
 		    // 2nd short block
 		    pos.trans.dy   = 0;
-		    pos.trans.dx   = (-1 * origin_shift) + (2.5 * crystalWidth - 2*overlap);
+		    pos.trans.dx   = (-1 * origin_shift) + (2.5 * crystalWidth - 2 * overlap);
 		    pos.trans.dz   = crystalThickness / 2.0;
 		    pos.child_tag  = trackerXmlTags.nspace + ":" + albox_short_tag;
 		    pos.copy	   = 2;
@@ -1351,7 +1359,7 @@ namespace insur {
 
 		    // 2nd long block
 		    pos.trans.dy   = 0;
-		    pos.trans.dx   = (-1 * origin_shift) + (3.5 * crystalWidth - 3.0 * overlap) + 0.5;
+		    pos.trans.dx   = (-1 * origin_shift) + (3.5 * crystalWidth - 2.5 * overlap);
 		    pos.trans.dz   = -1 * crystalThickness / 2.0;
 		    pos.child_tag  = trackerXmlTags.nspace + ":" + albox_long_tag;
 		    pos.copy	   = 2;

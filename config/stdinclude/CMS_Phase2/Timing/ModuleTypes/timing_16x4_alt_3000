@@ -20,9 +20,8 @@ numSensors 1            // crystalsContainer is considered as 1 sensor by the co
 
 width 184.48          // crystalsContainer width
 length 46.5              // crystalsContainer length
-physicalLength 46.5      // to avoid collisions with previous module in barrels
+physicalLength 46.51      // to avoid collisions with previous module in barrels
 sensorThickness 10.0    // crystalsContainer thickness
-
 
 Sensor 1 {
   sensorType largepix
@@ -39,8 +38,8 @@ Sensor 1 {
   
   alveolaShift 1.50      // crystals are placed at +Z = 1 mm and -Z = 1 mm alternatively.
   
-  crystalWidth  47.1 // no over laps is 46.12 for 184.48
-  crystalLength 2.90
+  crystalWidth  46.87 // no over laps is 46.12 for 184.48
+  crystalLength 2.90625
   crystalThickness 3.0
   crystalTiltAngle 0.0 // rotation along X axis
   
