@@ -144,7 +144,9 @@
     <Constant name="RadialCoolZ" value="29.5*cm"/>
     <Constant name="RadialCoolDZ" value="1.0*cm"/>
     <Constant name="RadialCoolRin" value="4.0*cm"/>
-    <Constant name="Tracker2SOuterRadius" value="116.0*cm"/>  
+    <Constant name="OTOuterRadius" value="116.1*cm"/>  
+    <Constant name="OTSTInnerRadius" value="118.8*cm"/>  
+    <Constant name="Tracker2SOuterRadius" value="122.3*cm"/>  
     <!-- Tracker volume does not include Timing Layer, Thermal screen, and Outer Tracker Support Tube. -->
   </ConstantsSection>
   <RotationSection label="pixbar.xml">
@@ -163,6 +165,14 @@
       <ZSection z="-[Zv1]"         rMin="[Rin1]"          rMax="[Rout1]" />
       <ZSection z="[Zv1]"          rMin="[Rin1]"          rMax="[Rout1]" />
     </Polycone>
+    <!-- <Polycone name="Phase2OTST" startPhi="0*deg" deltaPhi="360*deg"> -->
+    <!--   <ZSection z="-[Zv1]"         rMin="[OTSTInnerRadius]"          rMax="[Tracker2SOuterRadius]" /> -->
+    <!--   <ZSection z="[Zv1]"          rMin="[OTSTInnerRadius]"          rMax="[Tracker2SOuterRadius]" /> -->
+    <!-- </Polycone> -->
+    <Polycone name="Phase2OuterSpace" startPhi="0*deg" deltaPhi="360*deg">
+      <ZSection z="-[Zv1]"         rMin="[OTOuterRadius]"          rMax="[OTSTInnerRadius]" />
+      <ZSection z="[Zv1]"          rMin="[OTOuterRadius]"          rMax="[OTSTInnerRadius]" />
+    </Polycone>
     <SubtractionSolid name="Phase2OTBarrel">
       <rSolid name="Barrel"/>
       <rSolid name="Phase2PixelBarrel"/>
@@ -172,6 +182,14 @@
   <LogicalPartSection label="pixbar.xml">
     <LogicalPart name="Phase2PixelBarrel" category="unspecified">
       <rSolid name="Phase2PixelBarrel"/>
+      <rMaterial name="materials:Air"/>
+    </LogicalPart>
+    <!-- <LogicalPart name="Phase2OTST" category="unspecified"> -->
+    <!--   <rSolid name="Phase2OTST"/> -->
+    <!--   <rMaterial name="materials:Air"/> -->
+    <!-- </LogicalPart> -->
+    <LogicalPart name="Phase2OuterSpace" category="unspecified">
+      <rSolid name="Phase2OuterSpace"/>
       <rMaterial name="materials:Air"/>
     </LogicalPart>
     <LogicalPart name="Phase2OTBarrel" category="unspecified">
