@@ -165,17 +165,18 @@
       <ZSection z="-[Zv1]"         rMin="[Rin1]"          rMax="[Rout1]" />
       <ZSection z="[Zv1]"          rMin="[Rin1]"          rMax="[Rout1]" />
     </Polycone>
-    <!-- <Polycone name="Phase2OTST" startPhi="0*deg" deltaPhi="360*deg"> -->
-    <!--   <ZSection z="-[Zv1]"         rMin="[OTSTInnerRadius]"          rMax="[Tracker2SOuterRadius]" /> -->
-    <!--   <ZSection z="[Zv1]"          rMin="[OTSTInnerRadius]"          rMax="[Tracker2SOuterRadius]" /> -->
-    <!-- </Polycone> -->
     <Polycone name="Phase2OuterSpace" startPhi="0*deg" deltaPhi="360*deg">
       <ZSection z="-[Zv1]"         rMin="[OTOuterRadius]"          rMax="[OTSTInnerRadius]" />
       <ZSection z="[Zv1]"          rMin="[OTOuterRadius]"          rMax="[OTSTInnerRadius]" />
     </Polycone>
-    <SubtractionSolid name="Phase2OTBarrel">
+    <SubtractionSolid name="Phase2Outer">
       <rSolid name="Barrel"/>
       <rSolid name="Phase2PixelBarrel"/>
+      <Translation x="0*cm" y="0*cm" z="0*cm"/>
+    </SubtractionSolid> 
+    <SubtractionSolid name="Phase2OTBarrel">
+      <rSolid name="Phase2Outer"/>
+      <rSolid name="Phase2OuterSpace"/>
       <Translation x="0*cm" y="0*cm" z="0*cm"/>
     </SubtractionSolid> 
   </SolidSection>
@@ -184,10 +185,6 @@
       <rSolid name="Phase2PixelBarrel"/>
       <rMaterial name="materials:Air"/>
     </LogicalPart>
-    <!-- <LogicalPart name="Phase2OTST" category="unspecified"> -->
-    <!--   <rSolid name="Phase2OTST"/> -->
-    <!--   <rMaterial name="materials:Air"/> -->
-    <!-- </LogicalPart> -->
     <LogicalPart name="Phase2OuterSpace" category="unspecified">
       <rSolid name="Phase2OuterSpace"/>
       <rMaterial name="materials:Air"/>
