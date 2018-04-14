@@ -24,7 +24,7 @@
 
    <PosPartSection label="btl.xml">            
     <PosPart copyNumber="1">                   
-     <rParent name="pixbar:Phase2OuterSpace"/>   
+     <rParent name="tracker:Tracker"/>   
      <rChild name="btl:BarrelTimingLayer"/>    
     </PosPart>                                 
    </PosPartSection>                           

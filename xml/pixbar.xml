@@ -9,8 +9,7 @@
     <!--<Constant name="Rout1" value="20.35*cm"/>-->
     <Constant name="Rout1" value="19.20*cm"/> <!-- 21.35*cm-->
     <Constant name="Rout2" value="21.00*cm"/>
-    <!--<Constant name="Zv1" value="28.70*cm"/>-->
-    <Constant name="Zv1" value="22.70*cm"/> <!-- For Pixel 1_1_1 : value="30.00*cm" -->
+    <Constant name="Zv1" value="22.70*cm"/> <!-- For Tilted Inner Tracker 501: value="41.50*cm"  -->
     <Constant name="Zv2" value="56.00*cm"/>
     <Constant name="Zv3" value="110.5*cm"/>
     <Constant name="Zv4" value="282.0*cm"/>
@@ -144,9 +143,7 @@
     <Constant name="RadialCoolZ" value="29.5*cm"/>
     <Constant name="RadialCoolDZ" value="1.0*cm"/>
     <Constant name="RadialCoolRin" value="4.0*cm"/>
-    <Constant name="OTOuterRadius" value="116.1*cm"/>  
-    <Constant name="OTSTInnerRadius" value="118.8*cm"/>  
-    <Constant name="Tracker2SOuterRadius" value="122.3*cm"/>  
+    <Constant name="Tracker2SOuterRadius" value="116.0*cm"/>  
     <!-- Tracker volume does not include Timing Layer, Thermal screen, and Outer Tracker Support Tube. -->
   </ConstantsSection>
   <RotationSection label="pixbar.xml">
@@ -165,28 +162,15 @@
       <ZSection z="-[Zv1]"         rMin="[Rin1]"          rMax="[Rout1]" />
       <ZSection z="[Zv1]"          rMin="[Rin1]"          rMax="[Rout1]" />
     </Polycone>
-    <Polycone name="Phase2OuterSpace" startPhi="0*deg" deltaPhi="360*deg">
-      <ZSection z="-[Zv1]"         rMin="[OTOuterRadius]"          rMax="[OTSTInnerRadius]" />
-      <ZSection z="[Zv1]"          rMin="[OTOuterRadius]"          rMax="[OTSTInnerRadius]" />
-    </Polycone>
-    <SubtractionSolid name="Phase2Outer">
+    <SubtractionSolid name="Phase2OTBarrel">
       <rSolid name="Barrel"/>
       <rSolid name="Phase2PixelBarrel"/>
-      <Translation x="0*cm" y="0*cm" z="0*cm"/>
-    </SubtractionSolid> 
-    <SubtractionSolid name="Phase2OTBarrel">
-      <rSolid name="Phase2Outer"/>
-      <rSolid name="Phase2OuterSpace"/>
       <Translation x="0*cm" y="0*cm" z="0*cm"/>
     </SubtractionSolid> 
   </SolidSection>
   <LogicalPartSection label="pixbar.xml">
     <LogicalPart name="Phase2PixelBarrel" category="unspecified">
       <rSolid name="Phase2PixelBarrel"/>
-      <rMaterial name="materials:Air"/>
-    </LogicalPart>
-    <LogicalPart name="Phase2OuterSpace" category="unspecified">
-      <rSolid name="Phase2OuterSpace"/>
       <rMaterial name="materials:Air"/>
     </LogicalPart>
     <LogicalPart name="Phase2OTBarrel" category="unspecified">
