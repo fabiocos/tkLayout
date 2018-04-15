@@ -112,6 +112,7 @@ public:
   Property<double, Default> hybridThickness;
   Property<double, Default> supportPlateThickness;
   Property<double, Default> chipThickness;
+  Property<double, Default> shieldThickness;
 
   Property<bool, Default> removeModule;
 
@@ -150,6 +151,7 @@ public:
       hybridThickness          ("hybridThickness"          , parsedOnly(), 0),
       supportPlateThickness    ("supportPlateThickness"    , parsedOnly(), 0),
       chipThickness            ("chipThickness"            , parsedOnly(), 0),
+      shieldThickness          ("shieldThickness"            , parsedOnly(), 0),
       removeModule             ("removeModule"             , parsedOnly(), false)
 	{ }
 

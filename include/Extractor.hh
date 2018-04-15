@@ -169,6 +169,7 @@ namespace insur {
       static const int PixelModuleHybrid;
       static const int PixelModuleSensor;
       static const int PixelModuleChip;    
+      static const int Shield;
       
       class Volume {
         public :
@@ -238,6 +239,7 @@ namespace insur {
       const double         hybridThickness;
       const double         supportPlateThickness;
       const double         chipThickness;
+      const double         shieldThickness;
             double         hybridTotalMass;
             double         hybridTotalVolume_mm3;
             double         hybridFrontAndBackVolume_mm3;

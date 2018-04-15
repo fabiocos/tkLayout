@@ -3149,6 +3149,8 @@ namespace insur {
   const int ModuleComplex::HybridLR        = 56; 
   const int ModuleComplex::HybridFBLR_3456 = 3456;
 
+  const int ModuleComplex::Shield          = 111;
+
            // PIXEL MODULE
   const int ModuleComplex::PixelModuleNull   = 0;
   const int ModuleComplex::PixelModuleHybrid   = 1; 
@@ -3173,6 +3175,7 @@ namespace insur {
                                                              hybridThickness(module.hybridThickness()),
                                                              supportPlateThickness(module.supportPlateThickness()),
                                                              chipThickness(module.chipThickness()),
+                                                             shieldThickness(module.shieldThickness()),
                                                              hybridTotalMass(0.),
                                                              hybridTotalVolume_mm3(-1.),
                                                              hybridFrontAndBackVolume_mm3(-1.),
@@ -3247,11 +3250,11 @@ namespace insur {
 	// Hybrid FrontSide Volume
 	vol[HybridFront] = new Volume(moduleId+"FSide",HybridFront,parentId,dx,dy,dz,posx,posy,posz);
 
-	posx = -(modWidth+serviceHybridWidth)/2.;
-	posy = 0.;
-	posz = 0.;
-	// Hybrid BackSide Volume
-	vol[HybridBack] = new Volume(moduleId+"BSide",HybridBack,parentId,dx,dy,dz,posx,posy,posz);
+    posx = -(modWidth+serviceHybridWidth)/2.;
+    posy = 0.;
+    posz = 0.;
+    // Hybrid BackSide Volume
+    vol[HybridBack] = new Volume(moduleId+"BSide",HybridBack,parentId,dx,dy,dz,posx,posy,posz);
 
 	dx = modWidth+2*serviceHybridWidth;  
 	dy = frontEndHybridWidth;
@@ -3287,80 +3290,166 @@ namespace insur {
 
       else {
 	//                                                   TIMING MODULE
-	//
-	//  Top View
-	//  ------------------------------
-	//  |            L(5)            |  
-	//  |----------------------------|     y
-	//  |     |                |     |     ^
-	//  |B(4) |     Between    | F(3)|     |
-	//  |     |       (7)      |     |     +----> x
-	//  |----------------------------|
-	//  |            R(6)            |     
-	//  ------------------------------     
-	//                                            z
-	//  Side View                                 ^
-	//          
-	//  ====== ================ ====== Hybrids    +----> x
-	//         ---------------- Sensor
-	//  ============================== 
-	//          SupportPlate(8)                      
-	//
-	//  R(6) and L(5) are Front-End Hybrids.
-	//  B(4) and F(3) are Service Hybdrids.
-	//
-  
+
+        if ( moduleId.find("Layer") != std::string::npos ) { 
+
+          // BTL
+          //
+
+          //  Side View                                 ^
+          //          
+          //                                            +----> x
+          //  ============================== 
+          //          SupportPlate(8)                      
+          //  ////////////////////////////// PCB
+          //         ---------------- Sensor
+          //  .............................. Plastic protection in fron of crystals
+          //
+
+          //Unused pointers
+          vol[HybridFBLR_0] = 0;
+          vol[InnerSensor]  = 0;
+          vol[OuterSensor]  = 0;
+
+          const double gap = 0.5; // gap space for both silicon sensor and thermal gap pad (not simulated) 0.5 mm
+
+          double dx = modWidth;
+          double dy = modLength; 
+          double dz = hybridThickness;  
+          double posx = 0.;
+          double posy = 0.;
+          double posz = sensorThickness / 2. + gap + hybridThickness / 2.;
+          // Hybrid FrontSide Volume
+          vol[HybridFront] = new Volume(moduleId+"FSide",HybridFront,parentId,dx,dy,dz,posx,posy,posz);
+
+          dx = expandedModWidth;  
+          dy = expandedModLength; 
+          dz = supportPlateThickness;
+          posx = 0.;
+          posy = 0.;
+          posz = posz + hybridThickness /2. + supportPlateThickness / 2.;
+          // SupportPlate
+          vol[SupportPlate] = new Volume(moduleId+"SupportPlate",SupportPlate,parentId,dx,dy,dz,posx,posy,posz);
+
+          dx = modWidth;
+          dy = modLength;
+          dz = hybridThickness;
+          posx = 0.;
+          posy = 0.;
+          posz = posz + supportPlateThickness / 2. + gap + hybridThickness / 2.; 
+          // Hybrid BackSide Volume
+          vol[HybridBack] = new Volume(moduleId+"BSide",HybridBack,parentId,dx,dy,dz,posx,posy,posz);
+
+          dx = modWidth+2*serviceHybridWidth;  
+          dy = frontEndHybridWidth;
+          posx = 0.;
+          posy = (modLength+frontEndHybridWidth)/2.;
+          posz = sensorThickness / 2. + hybridThickness / 2.; 
+          // Hybrid LeftSide Volume
+          vol[HybridLeft] = new Volume(moduleId+"LSide",HybridLeft,parentId,dx,dy,dz,posx,posy,posz);
+
+          posx = 0.;
+          posy = -(modLength+frontEndHybridWidth)/2.;
+          posz = sensorThickness / 2. + hybridThickness / 2.; 
+          // Hybrid RightSide Volume
+          vol[HybridRight] = new Volume(moduleId+"RSide",HybridRight,parentId,dx,dy,dz,posx,posy,posz);
+
+          dx = modWidth; 
+          dy = modLength; 
+          posx = 0.;
+          posy = 0.;
+          posz = sensorThickness / 2. + hybridThickness / 2.; 
+          // Hybrid Between Volume
+          vol[HybridBetween] = new Volume(moduleId+"Between",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
+
+          dx = expandedModWidth;  
+          dy = expandedModLength; 
+          dz = supportPlateThickness;
+          posx = 0.;
+          posy = 0.;
+          posz = -sensorThickness /2. - shieldThickness / 2.;
+          // SupportPlate
+          vol[Shield] = new Volume(moduleId+"Shield",Shield,parentId,dx,dy,dz,posx,posy,posz);
+
+        }
+        else { 
+        
+
+          // ETL
+          //
+          //  Top View
+          //  ------------------------------
+          //  |            L(5)            |  
+          //  |----------------------------|     y
+          //  |     |                |     |     ^
+          //  |B(4) |     Between    | F(3)|     |
+          //  |     |       (7)      |     |     +----> x
+          //  |----------------------------|
+          //  |            R(6)            |     
+          //  ------------------------------     
+          //                                            z
+          //  Side View                                 ^
+          //          
+          //  ====== ================ ====== Hybrids    +----> x
+          //         ---------------- Sensor
+          //  ============================== 
+          //          SupportPlate(8)                      
+          //
+          //  R(6) and L(5) are Front-End Hybrids.
+          //  B(4) and F(3) are Service Hybdrids.
+          //
     
-	//Unused pointers
-	vol[HybridFBLR_0] = 0;
-	vol[InnerSensor]  = 0;
-	vol[OuterSensor]  = 0;
+          //Unused pointers
+          vol[HybridFBLR_0] = 0;
+          vol[InnerSensor]  = 0;
+          vol[OuterSensor]  = 0;
 
-	double dx = serviceHybridWidth;              
-	double dy = modLength; 
-	double dz = hybridThickness;  
-	double posx = (modWidth+serviceHybridWidth)/2.;
-	double posy = 0.;
-	double posz = sensorThickness / 2. + hybridThickness / 2.;
-	// Hybrid FrontSide Volume
-	vol[HybridFront] = new Volume(moduleId+"FSide",HybridFront,parentId,dx,dy,dz,posx,posy,posz);
+          double dx = serviceHybridWidth;              
+          double dy = modLength; 
+          double dz = hybridThickness;  
+          double posx = (modWidth+serviceHybridWidth)/2.;
+          double posy = 0.;
+          double posz = sensorThickness / 2. + hybridThickness / 2.;
+          // Hybrid FrontSide Volume
+          vol[HybridFront] = new Volume(moduleId+"FSide",HybridFront,parentId,dx,dy,dz,posx,posy,posz);
 
-	posx = -(modWidth+serviceHybridWidth)/2.;
-	posy = 0.;
-	posz = sensorThickness / 2. + hybridThickness / 2.; 
-	// Hybrid BackSide Volume
-	vol[HybridBack] = new Volume(moduleId+"BSide",HybridBack,parentId,dx,dy,dz,posx,posy,posz);
+          posx = -(modWidth+serviceHybridWidth)/2.;
+          posy = 0.;
+          posz = sensorThickness / 2. + hybridThickness / 2.; 
+          // Hybrid BackSide Volume
+          vol[HybridBack] = new Volume(moduleId+"BSide",HybridBack,parentId,dx,dy,dz,posx,posy,posz);
 
-	dx = modWidth+2*serviceHybridWidth;  
-	dy = frontEndHybridWidth;
-	posx = 0.;
-	posy = (modLength+frontEndHybridWidth)/2.;
-	posz = sensorThickness / 2. + hybridThickness / 2.; 
-	// Hybrid LeftSide Volume
-	vol[HybridLeft] = new Volume(moduleId+"LSide",HybridLeft,parentId,dx,dy,dz,posx,posy,posz);
+          dx = modWidth+2*serviceHybridWidth;  
+          dy = frontEndHybridWidth;
+          posx = 0.;
+          posy = (modLength+frontEndHybridWidth)/2.;
+          posz = sensorThickness / 2. + hybridThickness / 2.; 
+          // Hybrid LeftSide Volume
+          vol[HybridLeft] = new Volume(moduleId+"LSide",HybridLeft,parentId,dx,dy,dz,posx,posy,posz);
 
-	posx = 0.;
-	posy = -(modLength+frontEndHybridWidth)/2.;
-	posz = sensorThickness / 2. + hybridThickness / 2.; 
-	// Hybrid RightSide Volume
-	vol[HybridRight] = new Volume(moduleId+"RSide",HybridRight,parentId,dx,dy,dz,posx,posy,posz);
+          posx = 0.;
+          posy = -(modLength+frontEndHybridWidth)/2.;
+          posz = sensorThickness / 2. + hybridThickness / 2.; 
+          // Hybrid RightSide Volume
+          vol[HybridRight] = new Volume(moduleId+"RSide",HybridRight,parentId,dx,dy,dz,posx,posy,posz);
 
-	dx = modWidth; 
-	dy = modLength; 
-	posx = 0.;
-	posy = 0.;
-	posz = sensorThickness / 2. + hybridThickness / 2.; 
-	// Hybrid Between Volume
-	vol[HybridBetween] = new Volume(moduleId+"Between",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
+          dx = modWidth; 
+          dy = modLength; 
+          posx = 0.;
+          posy = 0.;
+          posz = sensorThickness / 2. + hybridThickness / 2.; 
+          // Hybrid Between Volume
+          vol[HybridBetween] = new Volume(moduleId+"Between",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
 
-	dx = expandedModWidth;  
-	dy = expandedModLength; 
-	dz = supportPlateThickness;
-	posx = 0.;
-	posy = 0.;
-	posz = - sensorThickness / 2. - supportPlateThickness / 2.;
-	// SupportPlate
-	vol[SupportPlate] = new Volume(moduleId+"SupportPlate",SupportPlate,parentId,dx,dy,dz,posx,posy,posz);
+          dx = expandedModWidth;  
+          dy = expandedModLength; 
+          dz = supportPlateThickness;
+          posx = 0.;
+          posy = 0.;
+          posz = - sensorThickness / 2. - supportPlateThickness / 2.;
+          // SupportPlate
+          vol[SupportPlate] = new Volume(moduleId+"SupportPlate",SupportPlate,parentId,dx,dy,dz,posx,posy,posz);
+        }
       }
     }
 

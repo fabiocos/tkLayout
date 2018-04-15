@@ -1,0 +1,14 @@
+// Support plate for Timing module
+
+Component {
+  componentName "BTL Timing Support plate (above sensor)"
+  service false
+  scaleOnSensor 0
+  targetVolume 8
+  Element {
+    elementName Al
+    quantity 3
+    unit mm
+  }
+}
+
