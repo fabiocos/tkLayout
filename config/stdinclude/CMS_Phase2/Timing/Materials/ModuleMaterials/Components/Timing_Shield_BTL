@@ -1,0 +1,14 @@
+// Front shield for BTL Timing module
+
+Component {
+  componentName "BTL front shield (below sensor)"
+  service false
+  scaleOnSensor 0
+  targetVolume 7
+  Element {
+    elementName PE
+    quantity 1
+    unit mm
+  }
+}
+

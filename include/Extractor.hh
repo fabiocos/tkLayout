@@ -169,7 +169,6 @@ namespace insur {
       static const int PixelModuleHybrid;
       static const int PixelModuleSensor;
       static const int PixelModuleChip;    
-      static const int Shield;
       
       class Volume {
         public :

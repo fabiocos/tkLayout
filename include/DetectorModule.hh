@@ -151,7 +151,7 @@ public:
       hybridThickness          ("hybridThickness"          , parsedOnly(), 0),
       supportPlateThickness    ("supportPlateThickness"    , parsedOnly(), 0),
       chipThickness            ("chipThickness"            , parsedOnly(), 0),
-      shieldThickness          ("shieldThickness"            , parsedOnly(), 0),
+      shieldThickness          ("shieldThickness"          , parsedOnly(), 0),
       removeModule             ("removeModule"             , parsedOnly(), false)
 	{ }
 

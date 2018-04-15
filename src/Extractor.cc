@@ -3149,8 +3149,6 @@ namespace insur {
   const int ModuleComplex::HybridLR        = 56; 
   const int ModuleComplex::HybridFBLR_3456 = 3456;
 
-  const int ModuleComplex::Shield          = 111;
-
            // PIXEL MODULE
   const int ModuleComplex::PixelModuleNull   = 0;
   const int ModuleComplex::PixelModuleHybrid   = 1; 
@@ -3354,22 +3352,16 @@ namespace insur {
           // Hybrid RightSide Volume
           vol[HybridRight] = new Volume(moduleId+"RSide",HybridRight,parentId,dx,dy,dz,posx,posy,posz);
 
-          dx = modWidth; 
-          dy = modLength; 
-          posx = 0.;
-          posy = 0.;
-          posz = sensorThickness / 2. + hybridThickness / 2.; 
-          // Hybrid Between Volume
-          vol[HybridBetween] = new Volume(moduleId+"Between",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
+          // Hack to avoid introducing a new volume for shield
 
-          dx = expandedModWidth;  
-          dy = expandedModLength; 
-          dz = supportPlateThickness;
+          dx = 0.; 
+          dy = 0.;
+          dz = shieldThickness / 2.;
           posx = 0.;
           posy = 0.;
-          posz = -sensorThickness /2. - shieldThickness / 2.;
-          // SupportPlate
-          vol[Shield] = new Volume(moduleId+"Shield",Shield,parentId,dx,dy,dz,posx,posy,posz);
+          posz = - sensorThickness / 2. - shieldThickness / 2.; 
+          // Shield using between
+          vol[HybridBetween] = new Volume(moduleId+"Shield",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
 
         }
         else { 
