@@ -3187,7 +3187,14 @@ namespace insur {
     bool isMTD = SimParms::getInstance().isMTD();
     if (!module.isPixelModule()) {
       if (!module.isTimingModule()) expandedModThickness = sensorDistance + 2.0 * (supportPlateThickness + sensorThickness);
-      else expandedModThickness = sensorThickness + 2.0 * MAX(supportPlateThickness, hybridThickness);
+      else {
+        if ( moduleId.find("Layer") != std::string::npos ) {   //BTL
+          expandedModThickness = sensorThickness + 2.* (supportPlateThickness + 3. * hybridThickness) ;
+        }
+        else {  //ETL
+          expandedModThickness = sensorThickness + 2.0 * MAX(supportPlateThickness, hybridThickness);
+        }
+      }
       prefix_xmlfile = xml_fileident + ":";
       if ( isMTD ) { prefix_xmlfile = xml_MTDfileident + ":"; }
       nTypes = 9;
@@ -3297,6 +3304,7 @@ namespace insur {
           //  Side View                                 ^
           //          
           //                                            +----> x
+          //  ////////////////////////////// PCB
           //  ============================== 
           //          SupportPlate(8)                      
           //  ////////////////////////////// PCB
