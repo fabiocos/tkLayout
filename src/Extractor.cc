@@ -3352,16 +3352,24 @@ namespace insur {
           // Hybrid RightSide Volume
           vol[HybridRight] = new Volume(moduleId+"RSide",HybridRight,parentId,dx,dy,dz,posx,posy,posz);
 
-          // Hack to avoid introducing a new volume for shield
-
-          dx = 0.; 
-          dy = 0.;
-          dz = shieldThickness / 2.;
+          dx = modWidth; 
+          dy = modLength; 
           posx = 0.;
           posy = 0.;
-          posz = - sensorThickness / 2. - shieldThickness / 2.; 
-          // Shield using between
-          vol[HybridBetween] = new Volume(moduleId+"Shield",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
+          posz = sensorThickness / 2. + hybridThickness / 2.; 
+          // Hybrid Between Volume
+          vol[HybridBetween] = new Volume(moduleId+"Between",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
+
+          // Hack to avoid introducing a new volume for shield
+
+          // dx = 0.; 
+          // dy = 0.;
+          // dz = shieldThickness;
+          // posx = 0.;
+          // posy = 0.;
+          // posz = - sensorThickness / 2. - shieldThickness / 2.; 
+          // // Shield using between
+          // vol[HybridBetween] = new Volume(moduleId+"Shield",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
 
         }
         else { 
