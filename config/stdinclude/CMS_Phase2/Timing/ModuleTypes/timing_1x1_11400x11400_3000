@@ -1,6 +1,6 @@
-// Lindsey Gray version : Barrel Timing module
+// Fabio Cossutti version : Barrel Timing module (from T. Tabarelli's information)
 
-moduleType timing_1x1_11530x11625_3600 // timing modules should always have a type starting with keyword 'timing_'
+moduleType timing_1x1_11400x11400_3000 // timing modules should always have a type starting with keyword 'timing_'
 
 sensorLayout mono
 
@@ -19,8 +19,10 @@ numSensors 1            // crystalsContainer is considered as 1 sensor by the co
                         // More detailed description (crystals) for the XML export only.
 
 width 184.1             // crystalsContainer width
-length 276.1            // crystalsContainer length
-physicalLength 276.1    // to avoid collisions with previous module in barrels
+//length 276.1            // crystalsContainer length
+//physicalLength 276.1    // to avoid collisions with previous module in barrels
+length 46.1            // crystalsContainer length
+physicalLength 46.1    // to avoid collisions with previous module in barrels
 sensorThickness 4.0    // crystalsContainer thickness
 
 Sensor 1 {
@@ -29,7 +31,7 @@ Sensor 1 {
   crystalLayout 1      
 
   passiveComponentLayout 0     // test no passive component added "by hand"
-//  passiveComponentLayout 1
+//  passiveComponentLayout 1    
   passiveLayout1TopLayerThickness 4
   passiveLayout1BotLayerThickness 1
   
@@ -37,17 +39,19 @@ Sensor 1 {
   numROCY 1
   
   numCrystalsX 16       // 11.4mm x 16 + 0.1mm x (15+2) = 184.1mm
-  numCrystalsY 24       // 11.4mm x 24 + 0.1mm x (23+2) = 276.1mm
+//  numCrystalsY 24       // 11.4mm x 24 + 0.1mm x (23+2) = 276.1mm
+  numCrystalsY 4       // 11.4mm x 4 + 0.1mm x (3+2) = 46.1mm
   
   alveolaShift 0.0      // crystals are placed all at the same Z
   
   crystalWidth 11.4 
   crystalLength 11.4
-  crystalThickness 3.
+  crystalThickness 3.0
   crystalTiltAngle 0.0 // flat geometry, no rotation angle
   
   numStripsAcross 16    // TO DO : remove
-  numSegments 24
+//  numSegments 24
+  numSegments 4
 }
 
 
@@ -57,7 +61,6 @@ frontEndHybridWidth 0.0
 hybridThickness 1.6
 supportPlateThickness 3.0
 shieldThickness 1.0
-
 
 
 
