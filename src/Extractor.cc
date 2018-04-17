@@ -3189,7 +3189,7 @@ namespace insur {
       if (!module.isTimingModule()) expandedModThickness = sensorDistance + 2.0 * (supportPlateThickness + sensorThickness);
       else {
         if ( moduleId.find("Layer") != std::string::npos ) {   //BTL
-          expandedModThickness = sensorThickness + 2.* (supportPlateThickness + 3. * hybridThickness) ;
+          expandedModThickness = sensorThickness + 2.* (supportPlateThickness + 2.5 * hybridThickness) ;
         }
         else {  //ETL
           expandedModThickness = sensorThickness + 2.0 * MAX(supportPlateThickness, hybridThickness);
