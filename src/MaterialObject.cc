@@ -135,7 +135,7 @@ namespace material {
       //currElement.populateMaterialProperties(materialProperties);
       //populate directly because need to skip the control if is a service
       //TODO: check why componentName is not present in no Element
-      
+
       if (currElement->debugInactivate() == false) {
         quantity = currElement->totalGrams(materialProperties);
 

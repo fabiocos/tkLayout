@@ -3144,6 +3144,7 @@ namespace insur {
   const int ModuleComplex::HybridRight   = 6; 
   const int ModuleComplex::HybridBetween = 7; 
   const int ModuleComplex::SupportPlate  = 8; // Support Plate
+  const int ModuleComplex::FrontShield   = 9; // BTL Front Shield
   // extras
   const int ModuleComplex::HybridFB        = 34; 
   const int ModuleComplex::HybridLR        = 56; 
@@ -3172,8 +3173,8 @@ namespace insur {
                                                              serviceHybridWidth(module.serviceHybridWidth()),
                                                              hybridThickness(module.hybridThickness()),
                                                              supportPlateThickness(module.supportPlateThickness()),
+                                                             frontShieldThickness(module.frontShieldThickness()),
                                                              chipThickness(module.chipThickness()),
-                                                             shieldThickness(module.shieldThickness()),
                                                              hybridTotalMass(0.),
                                                              hybridTotalVolume_mm3(-1.),
                                                              hybridFrontAndBackVolume_mm3(-1.),
@@ -3198,6 +3199,7 @@ namespace insur {
       prefix_xmlfile = xml_fileident + ":";
       if ( isMTD ) { prefix_xmlfile = xml_MTDfileident + ":"; }
       nTypes = 9;
+      if ( isMTD ) { nTypes = 10; }
     }
     else {
       expandedModThickness = sensorThickness + 2.0 * MAX(chipThickness, hybridThickness);
@@ -3213,6 +3215,7 @@ namespace insur {
 
   void ModuleComplex::buildSubVolumes() {
     Volume* vol[nTypes];
+    bool isBTL(moduleId.find("Layer") != std::string::npos);
     if (!module.isPixelModule()) {
 
       if (!module.isTimingModule()) {
@@ -3317,7 +3320,7 @@ namespace insur {
           vol[InnerSensor]  = 0;
           vol[OuterSensor]  = 0;
 
-          const double gap = 0.5; // gap space for both silicon sensor and thermal gap pad (not simulated) 0.5 mm
+          const double gap = 0.3; // gap space for both silicon sensor and thermal gap pad (not simulated) 0.5 mm
 
           double dx = modWidth;
           double dy = modLength; 
@@ -3368,16 +3371,14 @@ namespace insur {
           // Hybrid Between Volume
           vol[HybridBetween] = new Volume(moduleId+"Between",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
 
-          // Hack to avoid introducing a new volume for shield
-
-          // dx = 0.; 
-          // dy = 0.;
-          // dz = shieldThickness;
-          // posx = 0.;
-          // posy = 0.;
-          // posz = - sensorThickness / 2. - shieldThickness / 2.; 
-          // // Shield using between
-          // vol[HybridBetween] = new Volume(moduleId+"Shield",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
+          dx = 0.; 
+          dy = 0.;
+          dz = frontShieldThickness;
+          posx = 0.;
+          posy = 0.;
+          posz = - sensorThickness / 2. - frontShieldThickness / 2.; 
+          // Shield using between
+          vol[FrontShield] = new Volume(moduleId+"Shield",FrontShield,parentId,dx,dy,dz,posx,posy,posz);
 
         }
         else { 
@@ -3411,6 +3412,7 @@ namespace insur {
           vol[HybridFBLR_0] = 0;
           vol[InnerSensor]  = 0;
           vol[OuterSensor]  = 0;
+          vol[FrontShield]  = 0;
 
           double dx = serviceHybridWidth;              
           double dy = modLength; 
@@ -3672,6 +3674,7 @@ namespace insur {
 	     el->targetVolume() == HybridLeft    ||
 	     el->targetVolume() == HybridRight   ||
 	     el->targetVolume() == HybridBetween ||
+	     (el->targetVolume() == FrontShield && isBTL) ||
 	     el->targetVolume() == SupportPlate     ) {
           vol[el->targetVolume()]->addMaterial(el->elementName(),el->quantityInGrams(module));
           vol[el->targetVolume()]->addMass(el->quantityInGrams(module));
@@ -3742,6 +3745,7 @@ namespace insur {
       volumes.push_back(vol[HybridRight]);
       volumes.push_back(vol[HybridBetween]);
       volumes.push_back(vol[SupportPlate]);
+      if ( isBTL ) { volumes.push_back(vol[FrontShield]); }
     }
     // PIXEL MODULE
     else {

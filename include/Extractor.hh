@@ -162,6 +162,7 @@ namespace insur {
       static const int HybridRight;
       static const int HybridBetween;
       static const int SupportPlate;
+      static const int FrontShield;
       static const int HybridFB;
       static const int HybridLR;
       static const int HybridFBLR_3456; // Front Back Left Right (ailias of HybridFBLR_0)
@@ -237,8 +238,8 @@ namespace insur {
       const double         serviceHybridWidth;
       const double         hybridThickness;
       const double         supportPlateThickness;
+      const double         frontShieldThickness;
       const double         chipThickness;
-      const double         shieldThickness;
             double         hybridTotalMass;
             double         hybridTotalVolume_mm3;
             double         hybridFrontAndBackVolume_mm3;

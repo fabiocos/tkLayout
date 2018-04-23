@@ -7,8 +7,8 @@ Component {
   targetVolume 8
   Element {
     elementName Al
-    quantity 3
-    unit mm
+    quantity 68.745
+    unit g
   }
 }
 

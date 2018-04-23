@@ -4,11 +4,11 @@ Component {
   componentName "BTL front shield (below sensor)"
   service false
   scaleOnSensor 0
-  targetVolume 7
+  targetVolume 9
   Element {
     elementName PE
-    quantity 1
-    unit mm
+    quantity 8.063
+    unit g
   }
 }
 
