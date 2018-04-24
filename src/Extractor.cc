@@ -3371,8 +3371,8 @@ namespace insur {
           // Hybrid Between Volume
           vol[HybridBetween] = new Volume(moduleId+"Between",HybridBetween,parentId,dx,dy,dz,posx,posy,posz);
 
-          dx = 0.; 
-          dy = 0.;
+          dx = modWidth; 
+          dy = modLength; 
           dz = frontShieldThickness;
           posx = 0.;
           posy = 0.;

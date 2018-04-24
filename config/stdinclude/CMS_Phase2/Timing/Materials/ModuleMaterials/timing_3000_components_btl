@@ -3,4 +3,4 @@
 @include-std CMS_Phase2/Timing/Materials/ModuleMaterials/Components/1xSensor_Active_3000um
 @include-std CMS_Phase2/Timing/Materials/ModuleMaterials/Components/Timing_Support_Plate_BTL
 @include-std CMS_Phase2/Timing/Materials/ModuleMaterials/Components/Timing_Hybrid_Circuits_BTL
-//@include-std CMS_Phase2/Timing/Materials/ModuleMaterials/Components/Timing_Shield_BTL
+@include-std CMS_Phase2/Timing/Materials/ModuleMaterials/Components/Timing_Shield_BTL
