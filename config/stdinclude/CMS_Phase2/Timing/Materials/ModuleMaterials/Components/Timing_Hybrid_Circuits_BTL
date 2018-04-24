@@ -8,25 +8,25 @@ Component {
   // POH CFRP support
   Element {
     elementName CFRP
-    quantity 0.3125
+    quantity 2.436
     unit g
   }
   // POH glue
   Element {
     elementName Epoxy
-    quantity 0.05
+    quantity 1.
     unit g
   }
   // POH copper
   Element {
     elementName Cu
-    quantity 0.490
+    quantity 24.64
     unit g
   }
   // POH board + components
   Element {
     elementName PS-ROH-mix
-    quantity 0.63
+    quantity 31.6
     unit g
   }
 }
@@ -39,25 +39,25 @@ Component {
   // POH CFRP support
   Element {
     elementName CFRP
-    quantity 0.3125
+    quantity 2.436
     unit g
   }
   // POH glue
   Element {
     elementName Epoxy
-    quantity 0.05
+    quantity 1.
     unit g
   }
   // POH copper
   Element {
     elementName Cu
-    quantity 0.490
+    quantity 24.64
     unit g
   }
   // POH board + components
   Element {
     elementName PS-ROH-mix
-    quantity 0.63
+    quantity 31.6
     unit g
   }
 }
