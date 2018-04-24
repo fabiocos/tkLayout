@@ -48,7 +48,7 @@ namespace insur {
 
   void CompositeMaterial::fromCfg(std::string str) {
     //Example string: Composite "Kapton" 0.6  "Pyroid":0.  "C":0.3
-   
+
     str = ltrim(str);
 
     int tagEnd; 
