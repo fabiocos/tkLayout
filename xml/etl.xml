@@ -3,7 +3,7 @@
 
   <ConstantsSection label="etl.xml" eval="true">
     <Constant name="ETLrmin" value="[escon:R_MIN]"/>
-    <Constant name="ETLrmax" value="116.0*cm"/>
+    <Constant name="ETLrmax" value="[escon:Front_window_Al]"/>
     <Constant name="ETLzmin" value="-50.0*mm"/>
     <Constant name="ETLzmax" value="50.0*mm"/>
     <Constant name="ETLoffset" value="[escon:ESFrontZ]"/>
