@@ -6,7 +6,7 @@
     <Constant name="ETLrmax" value="[escon:Front_window_Al]"/>
     <Constant name="ETLzmin" value="-50.0*mm"/>
     <Constant name="ETLzmax" value="50.0*mm"/>
-    <Constant name="ETLoffset" value="[escon:ESFrontZ]"/>
+    <Constant name="ETLoffset" value="[escon:ESFrontZ]+7.5*mm"/>
   </ConstantsSection>
 
   <SolidSection label="etl.xml">
