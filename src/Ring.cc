@@ -68,12 +68,16 @@ std::pair<double, int> Ring::computeOptimalRingParametersWedge(double moduleWafe
 }
 
 std::pair<double, int> Ring::computeOptimalRingParametersRectangle(double moduleWidth, double highRadius) {
+
   double effectiveWidth = moduleWidth - phiOverlap();
   double optimalAlpha = 2 * atan( effectiveWidth / (2. * highRadius));
   double tentativeNumMods = 2 * M_PI/ optimalAlpha;
   int modsPerSlice = ceil(tentativeNumMods/phiSegments());
   if ((modsPerSlice % 2) == 0 && requireOddModsPerSlice()) modsPerSlice++;
   int optimalNumMods = modsPerSlice * phiSegments();
+
+  optimalNumMods = std::round(tentativeNumMods) ; 
+  std::cout << "\n ATTENTION: ring module multiplicity calculation for ETL only!!!!! " << optimalNumMods << std::endl;
 
   return std::make_pair(optimalAlpha, optimalNumMods);
 }

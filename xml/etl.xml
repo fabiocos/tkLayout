@@ -6,7 +6,7 @@
     <Constant name="ETLrmax" value="[escon:Front_window_Al]"/>
     <Constant name="ETLzmin" value="-50.0*mm"/>
     <Constant name="ETLzmax" value="50.0*mm"/>
-    <Constant name="ETLoffset" value="[escon:ESFrontZ]+7.5*mm"/>
+    <Constant name="ETLoffset" value="7.5*mm"/>
   </ConstantsSection>
 
   <SolidSection label="etl.xml">
@@ -27,7 +27,7 @@
     <PosPart copyNumber="1">                                           
       <rParent name="esalgo:SF"/>                         
       <rChild name="etl:EndcapTimingLayer"/>  
-      <Translation x="0." y="0." z="[ETLoffset]+[ETLzmax]" />
+      <Translation x="0." y="0." z="[escon:ESFrontZ]+[ETLoffset]+[ETLzmax]" />
     </PosPart>                                                         
   </PosPartSection>                                                    
 

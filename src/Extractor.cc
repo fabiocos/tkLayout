@@ -2296,9 +2296,144 @@ namespace insur {
         //findDeltaZ(lagg.getEndcapLayers()->at(layer - 1)->getModuleVector()->begin(), // CUIDADO what the hell is this??
         //lagg.getEndcapLayers()->at(layer - 1)->getModuleVector()->end(), (zmin + zmax) / 2.0) / 2.0;
 
+
+        ////////////////////////////////////////////////////////////////////////
+        // ETL support outside ring
+        ////////////////////////////////////////////////////////////////////////
+
+        if ( isMTD ) {
+
+          std::pair<float,float> ringRR;
+          std::vector< std::pair<float,float> > ringZlim;
+          unsigned int iRing(0);
+          float RRmin(99999.), RRmax(0.), ZZmin(0.), ZZmax(0.);
+          unsigned int IImin(0),IImax(0);
+
+          std::set<int>::const_iterator siter, sguard = ridx.end();
+          for (siter = ridx.begin(); siter != sguard; siter++) {
+            if (rinfo[*siter].modules > 0) {
+          
+              iRing = iRing+1;
+              ringRR = std::make_pair( rinfo[*siter].rmin - xml_epsilon , rinfo[*siter].rmax + xml_epsilon );
+              ringZlim.push_back(ringRR);
+    
+              if ( rinfo[*siter].rmin - xml_epsilon < RRmin ) { 
+                RRmin = rinfo[*siter].rmin - xml_epsilon ; 
+                ZZmin = (rinfo[*siter].zmin + rinfo[*siter].zmax) / 2.0 - diskZ;
+                IImin = iRing; 
+              }
+              if ( rinfo[*siter].rmax + xml_epsilon > RRmax ) { 
+                RRmax = rinfo[*siter].rmax + xml_epsilon ; 
+                ZZmax = (rinfo[*siter].zmin + rinfo[*siter].zmax) / 2.0 - diskZ;
+                IImax = iRing; 
+              }
+              
+            }
+          }
+
+          if ( ZZmin != ZZmax ) { std::cout << "ETL, out-of-ring support algorithm incorrect " << std::endl; break; }
+          else { std::cout << "ETL support out of ring " << IImin << " " << ZZmin << " " << IImax << " " << ZZmax << std::endl; }
+
+          for ( unsigned int ir = IImin; ir < IImax-1; ir = ir+2 ) {
+
+            std::string out_ring_support_tag = dname.str()+"_support"+std::to_string(ir);
+            shape.type			    = tb;
+            shape.name_tag		    = out_ring_support_tag;
+            shape.rmin = ringZlim[ir].second;
+            shape.rmax = ringZlim[ir+2].first;
+            shape.dz			    = 3.; // hardcoded value for the time being, aluminum plats 6 mm thick
+            s.push_back(shape);
+            
+            std::string   out_ring_support_material_tag = xml_MTDfileident+":"+"tkLayout_Al";
+            logic.material_tag = out_ring_support_material_tag;
+            logic.shape_tag    = trackerXmlTags.nspace + ":" + out_ring_support_tag;
+            logic.name_tag     = out_ring_support_tag;
+            l.push_back(logic);
+
+            pos.trans.dx   = 0;
+            pos.trans.dy   = 0;	
+            pos.trans.dz = ZZmin;
+            pos.copy       = 1;
+            pos.child_tag  = trackerXmlTags.nspace + ":" + out_ring_support_tag;
+            pos.parent_tag = trackerXmlTags.nspace + ":" + dname.str();
+            p.push_back(pos);
+
+          }
+
+          for ( unsigned int ir = IImin+1; ir < IImax; ir = ir+2 ) {
+
+            std::string out_ring_support_tag = dname.str()+"_support"+std::to_string(ir);
+            shape.type			    = tb;
+            shape.name_tag		    = out_ring_support_tag;
+            if ( ir == 2 ) { 
+              shape.rmin = RRmin; 
+              shape.rmax = ringZlim[ir].first; 
+            } 
+            else if ( ir == IImax-1 ) { 
+              shape.rmin = ringZlim[ir].second; 
+              shape.rmax = RRmax; 
+            }
+            else {
+              shape.rmin = ringZlim[ir].second;
+              shape.rmax = ringZlim[ir+2].first;
+            }
+            shape.dz			    = 3.; // hardcoded value for the time being, aluminum plats 6 mm thick
+            s.push_back(shape);
+            
+            std::string   out_ring_support_material_tag = xml_MTDfileident+":"+"tkLayout_Al";
+            logic.material_tag = out_ring_support_material_tag;
+            logic.shape_tag    = trackerXmlTags.nspace + ":" + out_ring_support_tag;
+            logic.name_tag     = out_ring_support_tag;
+            l.push_back(logic);
+
+            pos.trans.dx   = 0;
+            pos.trans.dy   = 0;	
+            pos.trans.dz   = -ZZmax;
+            pos.copy       = 1;
+            pos.child_tag  = trackerXmlTags.nspace + ":" + out_ring_support_tag;
+            pos.parent_tag = trackerXmlTags.nspace + ":" + dname.str();
+            p.push_back(pos);
+
+          }
+          
+        }
+
+        ////////////////////////////////////////////////////////////////////////
+
         std::set<int>::const_iterator siter, sguard = ridx.end();
         for (siter = ridx.begin(); siter != sguard; siter++) {
           if (rinfo[*siter].modules > 0) {
+
+            ////////////////////////////////////////////////////////////////////////
+            // ETL support within ring
+            ////////////////////////////////////////////////////////////////////////
+            
+            if ( isMTD ) {
+
+              std::string ring_support_tag = rinfo[*siter].name + "_support";
+              shape.type			    = tb;
+              shape.name_tag		    = ring_support_tag;
+              shape.rmin = rinfo[*siter].rmin - xml_epsilon;
+              shape.rmax = rinfo[*siter].rmax + xml_epsilon;
+              shape.dz			    = 1.7; // hardcoded value for the time being 
+              s.push_back(shape);
+
+              std::string   ring_support_material_tag = xml_MTDfileident+":"+"tkLayout_Al";
+              logic.material_tag = ring_support_material_tag;
+              logic.shape_tag    = trackerXmlTags.nspace + ":" + ring_support_tag;
+              logic.name_tag     = ring_support_tag;
+              l.push_back(logic);
+
+              pos.trans.dx   = 0;
+              pos.trans.dy   = 0;	
+              pos.trans.dz   = 0.;
+              pos.copy       = 1;
+              pos.child_tag  = trackerXmlTags.nspace + ":" + ring_support_tag;
+              pos.parent_tag = trackerXmlTags.nspace + ":" + rinfo[*siter].name;
+              p.push_back(pos);
+
+            }
+            //////////////////////////////////////////////
 
             shape.name_tag = rinfo[*siter].name;
             shape.rmin = rinfo[*siter].rmin - xml_epsilon;

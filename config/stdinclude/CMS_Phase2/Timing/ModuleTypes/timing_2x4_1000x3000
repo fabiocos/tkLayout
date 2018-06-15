@@ -2,7 +2,7 @@
 
 moduleType timing_2x4_1000x3000  // timing modules should always have a type starting with keyword 'timing_'
 // Active silicon size
-width 48
+width 49
 length 95
 
 sensorLayout mono
