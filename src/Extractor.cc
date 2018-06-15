@@ -2316,7 +2316,7 @@ namespace insur {
               iRing = iRing+1;
               ringRR = std::make_pair( rinfo[*siter].rmin - xml_epsilon , rinfo[*siter].rmax + xml_epsilon );
               ringZlim.push_back(ringRR);
-    
+
               if ( rinfo[*siter].rmin - xml_epsilon < RRmin ) { 
                 RRmin = rinfo[*siter].rmin - xml_epsilon ; 
                 ZZmin = (rinfo[*siter].zmin + rinfo[*siter].zmax) / 2.0 - diskZ;
@@ -2332,15 +2332,17 @@ namespace insur {
           }
 
           if ( ZZmin != ZZmax ) { std::cout << "ETL, out-of-ring support algorithm incorrect " << std::endl; break; }
-          else { std::cout << "ETL support out of ring " << IImin << " " << ZZmin << " " << IImax << " " << ZZmax << std::endl; }
+          else { std::cout << "ETL support out of ring " << IImin << " " << ZZmin << " " << RRmin << " " 
+                           << IImax << " " << ZZmax << " " << RRmax <<std::endl; }
+
 
           for ( unsigned int ir = IImin; ir < IImax-1; ir = ir+2 ) {
 
-            std::string out_ring_support_tag = dname.str()+"_support"+std::to_string(ir);
+            std::string out_ring_support_tag = dname.str()+"_support"+std::to_string(ir+1);
             shape.type			    = tb;
             shape.name_tag		    = out_ring_support_tag;
-            shape.rmin = ringZlim[ir].second;
-            shape.rmax = ringZlim[ir+2].first;
+            shape.rmin = ringZlim[ir-1].second;
+            shape.rmax = ringZlim[ir+1].first;
             shape.dz			    = 3.; // hardcoded value for the time being, aluminum plats 6 mm thick
             s.push_back(shape);
             
@@ -2362,24 +2364,24 @@ namespace insur {
 
           for ( unsigned int ir = IImin+1; ir < IImax; ir = ir+2 ) {
 
-            std::string out_ring_support_tag = dname.str()+"_support"+std::to_string(ir);
+            std::string out_ring_support_tag = dname.str()+"_support"+std::to_string(ir-1);
             shape.type			    = tb;
             shape.name_tag		    = out_ring_support_tag;
             if ( ir == 2 ) { 
               shape.rmin = RRmin; 
-              shape.rmax = ringZlim[ir].first; 
+              shape.rmax = ringZlim[ir-1].first; 
             } 
             else if ( ir == IImax-1 ) { 
-              shape.rmin = ringZlim[ir].second; 
+              shape.rmin = ringZlim[ir-1].second; 
               shape.rmax = RRmax; 
             }
             else {
-              shape.rmin = ringZlim[ir].second;
-              shape.rmax = ringZlim[ir+2].first;
+              shape.rmin = ringZlim[ir-1].second;
+              shape.rmax = ringZlim[ir+1].first;
             }
             shape.dz			    = 3.; // hardcoded value for the time being, aluminum plats 6 mm thick
             s.push_back(shape);
-            
+          
             std::string   out_ring_support_material_tag = xml_MTDfileident+":"+"tkLayout_Al";
             logic.material_tag = out_ring_support_material_tag;
             logic.shape_tag    = trackerXmlTags.nspace + ":" + out_ring_support_tag;
