@@ -131,6 +131,7 @@ namespace insur {
      void addLogicInfo   (std::vector<LogicalInfo>& vec);
      void addPositionInfo(std::vector<PosInfo>&     vec);
      void addMaterialInfo(std::vector<Composite>&   vec);
+     void addFixedMaterialInfo(MaterialTable& mt, std::vector<Composite>&   vec);
      void print() const;
 
      const double getServiceHybridWidth() const { return serviceHybridWidth; }

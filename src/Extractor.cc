@@ -1374,7 +1374,8 @@ namespace insur {
 		else { std::cout << "ERROR !! Barrel timing module with no sensor." << std::endl; }
 	      }
 
-	      modcomplex.addMaterialInfo(c);
+          //	      modcomplex.addMaterialInfo(c);
+	      modcomplex.addFixedMaterialInfo(mt, c);
 	      modcomplex.addShapeInfo(s);
 	      modcomplex.addLogicInfo(l);
 	      modcomplex.addPositionInfo(p);
@@ -1383,7 +1384,8 @@ namespace insur {
 		std::string parentNameNeg = mnameNeg.str();
 		ModuleComplex modcomplexNeg(mnameNeg.str(),parentNameNeg,*partner);
 		modcomplexNeg.buildSubVolumes();
-		modcomplexNeg.addMaterialInfo(c);
+        //		modcomplexNeg.addMaterialInfo(c);
+		modcomplexNeg.addFixedMaterialInfo(mt, c);
 		modcomplexNeg.addShapeInfo(s);
 		modcomplexNeg.addLogicInfo(l);
 		modcomplexNeg.addPositionInfo(p);
@@ -2235,7 +2237,8 @@ namespace insur {
 		mspec.moduletypes.push_back(minfo);
 	      }
 
-	      modcomplex.addMaterialInfo(c);
+          //	      modcomplex.addMaterialInfo(c);
+	      modcomplex.addFixedMaterialInfo(mt, c);
 	      modcomplex.addShapeInfo(s);
 	      modcomplex.addLogicInfo(l);
 	      modcomplex.addPositionInfo(p);
@@ -3804,7 +3807,7 @@ namespace insur {
 	  std::exit(1);
 	}
 
-	moduleMassWithoutSensors_expected += el->quantityInGrams(module);
+       moduleMassWithoutSensors_expected += el->quantityInGrams(module);
 
 	if ( el->targetVolume() == HybridFront   ||
 	     el->targetVolume() == HybridBack    ||
@@ -3950,7 +3953,43 @@ namespace insur {
       for (auto& elem : comp.elements) {
         elem.second /= m;
       }
+     
+      vec.push_back(comp);
+    }
+  }
+
+
+  void ModuleComplex::addFixedMaterialInfo(MaterialTable& mt, std::vector<Composite>& vec) {
+    for (const auto& vit : volumes) {
+      if (!(vit->getDensity() > 0.)) continue; 
+      Composite comp;
+      comp.name    = prefix_material + vit->getName();
+      comp.density = vit->getDensity();
+      comp.method  = wt;
       
+      double m = 0.0;
+      for (const auto& it : vit->getMaterialList()) {
+        comp.elements.insert(it);
+        m += it.second;
+      }
+      
+      for (auto& elem : comp.elements) {
+        elem.second /= m;
+      }
+     
+      // Recompute density according to fraction, work-around waiting for a proper fix of the definition
+
+      std::cout << "Composite STD " << comp.name << " density = " << comp.density << std::endl;
+
+      double fixedDensity = 0.;
+      for (auto& elem : comp.elements) {
+        std::cout << elem.first << " % = " << elem.second << " density = " << mt.getMaterial(elem.first).density << std::endl;
+        fixedDensity += elem.second * mt.getMaterial(elem.first).density;
+      }
+      comp.density = fixedDensity;
+
+      std::cout << "Composite FIX " << comp.name << " density = " << comp.density << std::endl;
+
       vec.push_back(comp);
     }
   }
