@@ -1,6 +1,6 @@
 // Lindsey Gray version : Barrel Timing module
 
-moduleType timing_16x4_alt_2600 // timing modules should always have a type starting with keyword 'timing_'
+moduleType timing_4x16_barz_3600 // timing modules should always have a type starting with keyword 'timing_'
 
 sensorLayout mono
 
@@ -20,7 +20,7 @@ numSensors 1            // crystalsContainer is considered as 1 sensor by the co
 
 width 184.48          // crystalsContainer width
 length 46.5              // crystalsContainer length
-physicalLength 46.51      // to avoid collisions with previous module in barrels
+physicalLength 46.5      // to avoid collisions with previous module in barrels
 sensorThickness 10.0    // crystalsContainer thickness
 
 
@@ -37,11 +37,11 @@ Sensor 1 {
   numCrystalsX 4       // 184.48mm / 16 = 11.53mm
   numCrystalsY 16        // 46.5mm / 4 = 11.625mm
   
-  alveolaShift 1.3      // crystals are placed at +Z = 1 mm and -Z = 1 mm alternatively.
+  alveolaShift 1.80      // crystals are placed at +Z = 1 mm and -Z = 1 mm alternatively.
   
   crystalWidth  46.87 // no over laps is 46.12 for 184.48
   crystalLength 2.90625
-  crystalThickness 2.6
+  crystalThickness 3.60
   crystalTiltAngle 0.0 // rotation along X axis
   
   numStripsAcross 4    // TO DO : remove
