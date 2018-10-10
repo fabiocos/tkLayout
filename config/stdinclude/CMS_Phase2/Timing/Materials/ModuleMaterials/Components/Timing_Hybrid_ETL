@@ -1,0 +1,87 @@
+// Two Front-end hybrids, power hybrid and readout hybrid
+Component {
+  componentName "Timing ETL Between"
+  service false
+  scaleOnSensor 0
+  targetVolume 7
+  Element {
+    elementName Al
+    quantity 0.0027
+    unit g
+  }
+  Element {
+    elementName CFRP
+    quantity 0.51
+    unit g
+  }
+  Element {
+    elementName Cu
+    quantity 1.192
+    unit g
+  }
+  Element {
+    elementName Epoxy
+    quantity 0.072
+    unit g
+  }
+  Element {
+    elementName PS-FEH-mix
+    quantity 0.151
+    unit g
+  }
+  Element {
+    elementName PS-ROH-mix
+    quantity 0.333
+    unit g
+  }
+   Element {
+     elementName Si
+     quantity 0.345
+     unit g
+   }
+   Element {
+     elementName Sn95Ag5
+     quantity 0.010  // Guess from the PS. Quantity from PS divided by 20 (numStripsAcross = 960 in PS and reference numStripsAcross = 48).
+     unit g
+     scaleOnSensor 1  // Quantity gets adjusted in case timing module has different number of channels from reference sensor.
+   }
+  Element {
+    elementName WB-enc
+    quantity 0.1
+    unit g
+  }
+}
+
+
+Component {
+  componentName "Timing ETL Back"
+  service false
+  scaleOnSensor 0
+  targetVolume 4
+  Element {
+    elementName CFRP
+    quantity 0.359
+    unit g
+  }
+  Element {
+    elementName Cu
+    quantity 2.745
+    unit g
+  }
+  Element {
+    elementName Epoxy
+    quantity 0.036
+    unit g
+  }
+  Element {
+    elementName PS-ROH-mix
+    quantity 0.607
+    unit g
+  }
+   Element {
+     elementName Si
+     quantity 0.17
+     unit g
+//     targetVolume 56
+   }
+}
