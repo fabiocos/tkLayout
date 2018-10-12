@@ -1078,6 +1078,7 @@ namespace insur {
 
 		  int numCrystalsX = iiter->getModule().sensors().front().numCrystalsX();
 		  int numCrystalsY = iiter->getModule().sensors().front().numCrystalsY();
+          int nBlock = numCrystalsX/iiter->getModule().sensors().front().numSegments();
 
 		  double    alveolaWidth  = iiter->getModule().sensors().front().alveolaWidth();
 		  double    alveolaLength = iiter->getModule().sensors().front().alveolaLength();
@@ -1120,22 +1121,27 @@ namespace insur {
 
 		      // slab geometry needs special placement of bars
 		      if (crystalLayout == 2) {
-			float	overlap	     = (4.0 / 3.0 ) * (crystalWidth - alveolaWidth); 
-			double	shift_origin = (4 * crystalWidth - 3 * overlap)/ 2.0;
-			pos.trans.dx	     = (-1 * shift_origin) + (1.0 * i + 0.5 ) * crystalWidth - (i * overlap); 
+                float	overlap	     = (4.0 / 3.0 ) * (crystalWidth - alveolaWidth); 
+                double	shift_origin = (4 * crystalWidth - 3 * overlap)/ 2.0;
+                pos.trans.dx	     = (-1 * shift_origin) + (1.0 * i + 0.5 ) * crystalWidth - (i * overlap); 
 		      }
 
-		      double midY = numCrystalsY / 2 - 0.5;
+              double midY = (double)numCrystalsY / 2. - 0.5 ; 
 		      pos.trans.dy = (j - midY) * alveolaLength;
 
 		      // here z is the arrow pointing into the plane of the module
 		      // crystal position ordering according to predefined flag
 		      if ( crystalLayout == 1 ) { 
-			pos.trans.dz = pow(-1., i + j) * alveolaShift; 
+                pos.trans.dz = pow(-1., i + j) * alveolaShift; 
 		      } else if ( crystalLayout == 2 ) {
-			pos.trans.dz = pow(-1., i+1) * crystalThickness / 2.0;
+                // slab along phi
+                pos.trans.dz = pow(-1., i+1) * crystalThickness / 2.0;
+		      } else if ( crystalLayout == 3 ) {
+                //slab along Z
+                int isegment = (i / nBlock)+1;
+                pos.trans.dz = pow(-1., isegment) * crystalThickness / 2.0;
 		      } else {
-			std::cout << "MISSING CRYSTAL LAYOUT, CRYSTALS NOT POSITIONED !!!" << std::endl;
+                std::cout << "MISSING CRYSTAL LAYOUT, CRYSTALS NOT POSITIONED !!!" << std::endl;
 		      }
 
 		      addTiltedModuleRot(r, crystalTiltAngle);
@@ -1174,7 +1180,7 @@ namespace insur {
 		  // TILE DESIGN ALUMINUM ELEMENTS
 		  // passiveComponentLayout = 0 means no passive components are added
 		  // two sandwiching layers top and bottom on untilted tiles 
-		  if(crystalLayout == 1 && passiveComponentLayout == 1) {
+		  if( crystalLayout == 1 && passiveComponentLayout == 1 ) {
 		    // top layer of the module shape
 		    std::string albox_top_layer_tag = mnameBase.str() + "_albox_layer_top";
 		    shape.type			    = bx;
@@ -1369,6 +1375,134 @@ namespace insur {
 		    // negative end
 		    pos.parent_tag = neg_wafer_tag;
 		    p.push_back(pos);
+		  } // end slab geometry passive elements
+		  else if(crystalLayout == 3 && passiveComponentLayout == 3) { 
+		    std::string	albox_short_tag = mnameBase.str() + "_albox_short";
+		    std::string	albox_long_tag	= mnameBase.str() + "_albox_long";
+		    std::string	albox_layer_tag	= mnameBase.str() + "_albox_layer";
+
+		    // filling gaps in the module.
+		    // 1. aluminum 
+		    shape.type	   = bx;
+		    shape.name_tag = albox_long_tag;
+		    shape.dx	   = (crystalWidth * nBlock) / 2.0;
+		    shape.dy	   = crystalLength / 2.0 ;
+		    shape.dz	   = crystalThickness / 2.0;
+		    s.push_back(shape);
+		    // 2. aluminum 
+		    shape.name_tag = albox_short_tag;
+		    shape.dx	   = (crystalWidth * nBlock) / 2.0;
+		    shape.dy	   = crystalLength / 2.0 ;
+		    shape.dz	   = crystalThickness / 2.0;
+		    s.push_back(shape);
+		    // 3. layer on top and bottom of module 
+		    // the total distance across decreases by 3 overlaps
+		    shape.name_tag = albox_layer_tag;
+		    shape.dx	   = (crystalWidth * numCrystalsX) / 2.0;
+		    shape.dy	   = (crystalLength * numCrystalsY) / 2.0;
+		    shape.dz	   = layout2Thickness / 2.0;
+		    s.push_back(shape);
+
+		    // LOGIC FOR THE MATERIAL
+		    // material is hard coded to aluminum
+		    std::string	passive_material_tag = prefix+":"+"tkLayout_Al";
+		    std::string pos_wafer_tag	     = trackerXmlTags.nspace + ":" + mname.str() + xml_timing + xml_base_waf;
+		    std::string neg_wafer_tag	     = trackerXmlTags.nspace + ":" + mnameNeg.str() + xml_timing + xml_base_waf;
+		    // short block
+		    logic.material_tag = passive_material_tag;
+		    logic.shape_tag    = trackerXmlTags.nspace + ":" + albox_short_tag;
+		    logic.name_tag     = albox_short_tag; 
+		    l.push_back(logic);
+		    // long block
+		    logic.material_tag = passive_material_tag;
+		    logic.shape_tag    = trackerXmlTags.nspace + ":" + albox_long_tag;
+		    logic.name_tag     = albox_long_tag; 
+		    l.push_back(logic);
+		    // layer
+		    logic.material_tag = passive_material_tag;
+		    logic.shape_tag    = trackerXmlTags.nspace + ":" + albox_layer_tag;
+		    logic.name_tag     = albox_layer_tag; 
+		    l.push_back(logic);
+
+		    // POSITION THE ALUMINIUM
+		    // add the sandwiching layers
+		    pos.trans.dx   = 0;
+		    pos.trans.dy   = 0;
+		    pos.child_tag  = trackerXmlTags.nspace + ":" + albox_layer_tag;
+
+		    // layer one
+		    pos.copy	   = 1;
+		    pos.trans.dz   = crystalThickness + 0.5 * layout2Thickness;
+		    // positive side
+		    pos.parent_tag = pos_wafer_tag;
+		    p.push_back(pos);
+		    // layer one negative side 
+		    pos.parent_tag = neg_wafer_tag;
+		    p.push_back(pos);
+
+		    // layer two		   
+		    pos.copy	   = 2;
+		    pos.trans.dz   = -1 * crystalThickness  - 0.5 *  layout2Thickness;
+		    // positive side
+		    pos.parent_tag = pos_wafer_tag;
+		    p.push_back(pos);
+		    // negative side
+		    pos.parent_tag = neg_wafer_tag;
+		    p.push_back(pos);
+
+            // POSITIONING OF THE 4 AL. BLOCKS FILLING THE SPACE
+		    // bottom long aluminum block
+
+		    pos.trans.dy	 = 0;
+		    pos.trans.dx	 = -1.5*nBlock*crystalWidth;
+		    pos.trans.dz	 = crystalThickness / 2.0;
+		    pos.child_tag	 = trackerXmlTags.nspace + ":" + albox_long_tag;
+		    pos.copy		 = 1;
+		    // positive end
+		    pos.parent_tag	 = pos_wafer_tag;
+		    p.push_back(pos);
+		    // negative end
+		    pos.parent_tag	 = neg_wafer_tag;
+		    p.push_back(pos);
+
+		    // bottom short block
+		    pos.trans.dy   = 0;
+		    pos.trans.dx   = -0.5*nBlock*crystalWidth;
+		    pos.trans.dz   = -0.5 * crystalThickness;
+		    pos.child_tag  = trackerXmlTags.nspace + ":" + albox_short_tag;
+		    pos.copy	   = 1;
+		    // positive end
+		    pos.parent_tag = pos_wafer_tag;
+		    p.push_back(pos);
+		    // negative end
+		    pos.parent_tag = neg_wafer_tag;
+		    p.push_back(pos);
+
+		    // 2nd short block
+		    pos.trans.dy   = 0;
+		    pos.trans.dx   = 0.5*nBlock*crystalWidth;
+		    pos.trans.dz   = crystalThickness / 2.0;
+		    pos.child_tag  = trackerXmlTags.nspace + ":" + albox_short_tag;
+		    pos.copy	   = 2;
+		    // positive end
+		    pos.parent_tag = pos_wafer_tag;
+		    p.push_back(pos);
+		    // negative end
+		    pos.parent_tag = neg_wafer_tag;
+		    p.push_back(pos);
+
+		    // 2nd long block
+		    pos.trans.dy   = 0;
+		    pos.trans.dx   = 1.5*nBlock*crystalWidth;
+		    pos.trans.dz   = -1 * crystalThickness / 2.0;
+		    pos.child_tag  = trackerXmlTags.nspace + ":" + albox_long_tag;
+		    pos.copy	   = 2;
+		    // positive end
+		    pos.parent_tag = pos_wafer_tag;
+		    p.push_back(pos);
+		    // negative end
+		    pos.parent_tag = neg_wafer_tag;
+		    p.push_back(pos); 
 		  } // end slab geometry passive elements
 		}		
 		else { std::cout << "ERROR !! Barrel timing module with no sensor." << std::endl; }

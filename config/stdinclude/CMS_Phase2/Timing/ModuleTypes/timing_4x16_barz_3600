@@ -27,25 +27,25 @@ sensorThickness 10.0    // crystalsContainer thickness
 Sensor 1 {
   sensorType largepix
 
-  crystalLayout 2
-  passiveComponentLayout 2
+  crystalLayout 3
+  passiveComponentLayout 3
   passiveLayout2LayerThickness 1.0
   
   numROCX 1             // Only one chip in total
   numROCY 1
   
-  numCrystalsX 4       // 184.48mm / 16 = 11.53mm
-  numCrystalsY 16        // 46.5mm / 4 = 11.625mm
+  numCrystalsX 64
+  numCrystalsY 1
   
   alveolaShift 1.80      // crystals are placed at +Z = 1 mm and -Z = 1 mm alternatively.
   
-  crystalWidth  46.87 // no over laps is 46.12 for 184.48
-  crystalLength 2.90625
+  crystalWidth  2.8825
+  crystalLength 46.87
   crystalThickness 3.60
   crystalTiltAngle 0.0 // rotation along X axis
   
   numStripsAcross 4    // TO DO : remove
-  numSegments 16
+  numSegments 4        // IMPORTANT: used for barZ to determine grouping along phi
 }
 
 
