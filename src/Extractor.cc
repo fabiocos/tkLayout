@@ -1140,6 +1140,9 @@ namespace insur {
                 //slab along Z
                 int isegment = (i / nBlock)+1;
                 pos.trans.dz = pow(-1., isegment) * crystalThickness / 2.0;
+		      } else if ( crystalLayout == 4 ) {
+                //slab along Z flat geometry
+                pos.trans.dz = pow(-1., i + j) * alveolaShift; 
 		      } else {
                 std::cout << "MISSING CRYSTAL LAYOUT, CRYSTALS NOT POSITIONED !!!" << std::endl;
 		      }
