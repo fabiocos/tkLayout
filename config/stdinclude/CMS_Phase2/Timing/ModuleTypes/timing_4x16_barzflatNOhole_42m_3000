@@ -1,6 +1,6 @@
 // Lindsey Gray version : Barrel Timing module
 
-moduleType timing_4x16_barzflat_42m_3000 // timing modules should always have a type starting with keyword 'timing_'
+moduleType timing_4x16_barzflatNOhole_42m_3000 // timing modules should always have a type starting with keyword 'timing_'
 
 sensorLayout mono
 
@@ -19,8 +19,8 @@ numSensors 1            // crystalsContainer is considered as 1 sensor by the co
                         // More detailed description (crystals) for the XML export only.
 
 width 184.1             // crystalsContainer width
-length 60.5              // crystalsContainer length
-physicalLength 60.5      // to avoid collisions with previous module in barrels
+length 56.0              // crystalsContainer length
+physicalLength 56.0      // to avoid collisions with previous module in barrels
 sensorThickness 4.0      // crystalsContainer thickness
 
 

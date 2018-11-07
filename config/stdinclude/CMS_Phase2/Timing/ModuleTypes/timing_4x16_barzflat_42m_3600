@@ -19,8 +19,8 @@ numSensors 1            // crystalsContainer is considered as 1 sensor by the co
                         // More detailed description (crystals) for the XML export only.
 
 width 184.1             // crystalsContainer width
-length 60.0              // crystalsContainer length
-physicalLength 60.0      // to avoid collisions with previous module in barrels
+length 60.5              // crystalsContainer length
+physicalLength 60.5      // to avoid collisions with previous module in barrels
 sensorThickness 4.0      // crystalsContainer thickness
 
 
