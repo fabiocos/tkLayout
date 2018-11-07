@@ -793,7 +793,7 @@ namespace insur {
 	      shape.dy = modcomplex.getExpandedModuleLength()/2.0;
 	      shape.dz = modcomplex.getExpandedModuleThickness()/2.0;
 	      s.push_back(shape);
-	    
+
 	      // For LogicalPartSection in tracker.xml : module's material
 	      logic.material_tag = xml_material_air;
 	      logic.name_tag = mname.str();
@@ -812,25 +812,25 @@ namespace insur {
             	  
 
 	    // For PosPart section in tracker.xml : module's positions in rod (straight layer) or rod part (tilted layer)
-            if (!isTilted || (isTilted && (tiltAngle == 0))) {
+        if (!isTilted || (isTilted && (tiltAngle == 0))) {
 	      pos.parent_tag = trackerXmlTags.nspace + ":" + rodname.str();
 	      // DEFINE CHILD : MODULE TO BE PLACED IN A ROD.
 	      // Standard case
 	      if (!iiter->getModule().isTimingModule()) {
-		pos.child_tag = trackerXmlTags.nspace + ":" + mname.str();
+            pos.child_tag = trackerXmlTags.nspace + ":" + mname.str();
 	      }
 	      // For timing barrel layer : Child, to place in a rod, can be a copy of an existing module.	      
 	      else {
-		// Define new timing module child.
-		if (newTimingModuleType) {
-		  childName = trackerXmlTags.nspace + ":" + mnameBase.str();
-		  timingModuleCopyNumber = 1;
-		}
-		// Uses an already defined timing module with same properties.
-		else {
-		  childName = trackerXmlTags.nspace + ":" + timingModuleNames.at(crystalProperties);
-		  timingModuleCopyNumber += 1;
-		}
+            // Define new timing module child.
+            if (newTimingModuleType) {
+              childName = trackerXmlTags.nspace + ":" + mnameBase.str();
+              timingModuleCopyNumber = 1;
+            }
+            // Uses an already defined timing module with same properties.
+            else {
+              childName = trackerXmlTags.nspace + ":" + timingModuleNames.at(crystalProperties);
+              timingModuleCopyNumber += 1;
+            }
 	      }	// end of timing layer special case      
 	      pos.trans.dx = iiter->getModule().center().Rho() - RadiusIn;
 	      pos.trans.dz = iiter->getModule().center().Z();
@@ -842,13 +842,13 @@ namespace insur {
 	      
 	      // This is a copy of the BModule on -Z side
 	      if (partner != oiter->end()) {
-		pos.trans.dx = partner->getModule().center().Rho() - RadiusIn;
-		pos.trans.dz = partner->getModule().center().Z();
-		if (!partner->getModule().flipped()) { pos.rotref = trackerXmlTags.nspace + ":" + places_unflipped_mod_in_rod; }
-		else { pos.rotref = trackerXmlTags.nspace + ":" + places_flipped_mod_in_rod; }
-		pos.copy = (!iiter->getModule().isTimingModule() ? 2 : timingModuleCopyNumber);
-		if (iiter->getModule().isTimingModule()) pos.child_tag = childName + xml_negative_z;
-		p.push_back(pos);
+            pos.trans.dx = partner->getModule().center().Rho() - RadiusIn;
+            pos.trans.dz = partner->getModule().center().Z();
+            if (!partner->getModule().flipped()) { pos.rotref = trackerXmlTags.nspace + ":" + places_unflipped_mod_in_rod; }
+            else { pos.rotref = trackerXmlTags.nspace + ":" + places_flipped_mod_in_rod; }
+            pos.copy = (!iiter->getModule().isTimingModule() ? 2 : timingModuleCopyNumber);
+            if (iiter->getModule().isTimingModule()) pos.child_tag = childName + xml_negative_z;
+            p.push_back(pos);
 	      }
 	      // reset
 	      pos.copy = 1;

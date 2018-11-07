@@ -1,6 +1,6 @@
 // Lindsey Gray version : Barrel Timing module
 
-moduleType timing_4x16_barz_3000 // timing modules should always have a type starting with keyword 'timing_'
+moduleType timing_4x16_barzflat_3000 // timing modules should always have a type starting with keyword 'timing_'
 
 sensorLayout mono
 
