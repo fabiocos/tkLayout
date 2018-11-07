@@ -3585,11 +3585,11 @@ namespace insur {
           //          
           //                                            +----> x
           //  ////////////////////////////// PCB
-          //  ============================== 
-          //          SupportPlate(8)                      
+          //
           //  ////////////////////////////// PCB
           //         ---------------- Sensor
-          //  .............................. Plastic protection in fron of crystals
+          //  ============================== 
+          //          SupportPlate(8)                      
           //
 
           //Unused pointers
@@ -3599,30 +3599,30 @@ namespace insur {
 
           const double gap = 0.3; // gap space for both silicon sensor and thermal gap pad (not simulated) 0.5 mm
 
-          double dx = modWidth;
-          double dy = modLength; 
-          double dz = hybridThickness;  
+          double dx = expandedModWidth;  
+          double dy = expandedModLength; 
+          double dz = supportPlateThickness;
           double posx = 0.;
           double posy = 0.;
-          double posz = sensorThickness / 2. + gap + hybridThickness / 2.;
-          // Hybrid FrontSide Volume
-          vol[HybridFront] = new Volume(moduleId+"FSide",HybridFront,parentId,dx,dy,dz,posx,posy,posz);
-
-          dx = expandedModWidth;  
-          dy = expandedModLength; 
-          dz = supportPlateThickness;
-          posx = 0.;
-          posy = 0.;
-          posz = posz + hybridThickness /2. + supportPlateThickness / 2.;
+          double posz = -sensorThickness /2. - supportPlateThickness / 2.;
           // SupportPlate
           vol[SupportPlate] = new Volume(moduleId+"SupportPlate",SupportPlate,parentId,dx,dy,dz,posx,posy,posz);
+
+          dx = modWidth;
+          dy = modLength; 
+          dz = hybridThickness;  
+          posx = 0.;
+          posy = 0.;
+          posz = sensorThickness / 2. + gap + hybridThickness / 2.;
+          // Hybrid FrontSide Volume
+          vol[HybridFront] = new Volume(moduleId+"FSide",HybridFront,parentId,dx,dy,dz,posx,posy,posz);
 
           dx = modWidth;
           dy = modLength;
           dz = hybridThickness;
           posx = 0.;
           posy = 0.;
-          posz = posz + supportPlateThickness / 2. + gap + hybridThickness / 2.; 
+          posz = posz + gap + hybridThickness ; 
           // Hybrid BackSide Volume
           vol[HybridBack] = new Volume(moduleId+"BSide",HybridBack,parentId,dx,dy,dz,posx,posy,posz);
 
