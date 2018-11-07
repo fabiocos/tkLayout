@@ -1,0 +1,57 @@
+// Lindsey Gray version : Barrel Timing module
+
+moduleType timing_4x16_barzflat_42m_3600 // timing modules should always have a type starting with keyword 'timing_'
+
+sensorLayout mono
+
+reduceCombinatorialBackground true 
+
+powerStripChip 0
+powerModuleChip 0 
+powerModuleOptical 0
+
+plotColor 6
+
+
+// In all that follows, what is called 'crystalsContainer' is an UNTILTED parallelepiped, which contains the tilted crystals.
+
+numSensors 1            // crystalsContainer is considered as 1 sensor by the core of tkLayout.
+                        // More detailed description (crystals) for the XML export only.
+
+width 184.1             // crystalsContainer width
+length 60.0              // crystalsContainer length
+physicalLength 60.0      // to avoid collisions with previous module in barrels
+sensorThickness 4.0      // crystalsContainer thickness
+
+
+Sensor 1 {
+  sensorType largepix
+
+  crystalLayout 4
+  passiveComponentLayout 0
+  
+  numROCX 1             // Only one chip in total
+  numROCY 1
+  
+  numCrystalsX 64
+  numCrystalsY 1
+  
+  alveolaShift 0.0      // crystals are placed at +Z = 1 mm and -Z = 1 mm alternatively.
+  
+  crystalWidth  2.85
+  crystalLength 56.0
+  crystalThickness 3.60
+  crystalTiltAngle 0.0 // rotation along X axis
+  
+  numStripsAcross 4    // TO DO : remove
+  numSegments 4        // IMPORTANT: used for barZ to determine grouping along phi
+}
+
+
+// Extra (untilted) volumes, located outside crystalsContainer.
+serviceHybridWidth 0.0
+frontEndHybridWidth 0.0
+hybridThickness 1.6
+supportPlateThickness 3.0
+frontShieldThickness 1.0
+
