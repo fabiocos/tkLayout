@@ -1117,6 +1117,7 @@ namespace insur {
 		      // these shifts just place the crystal where it should
 		      // be in the module in units of crystal size 
 		      double midX = numCrystalsX / 2 - 0.5;
+              if (crystalLayout == 5) { midX = (double)numCrystalsX / 2. - 0.5; }
 		      pos.trans.dx = (i - midX) * alveolaWidth;
 
 		      // slab geometry needs special placement of bars
@@ -1140,8 +1141,8 @@ namespace insur {
                 //slab along Z
                 int isegment = (i / nBlock)+1;
                 pos.trans.dz = pow(-1., isegment) * crystalThickness / 2.0;
-		      } else if ( crystalLayout == 4 ) {
-                //slab along Z flat geometry
+		      } else if ( crystalLayout == 4 || crystalLayout == 5 ) {
+                //slab along Z (4) or phi (5) flat geometry, it works when alveolaShift = 0
                 pos.trans.dz = pow(-1., i + j) * alveolaShift; 
 		      } else {
                 std::cout << "MISSING CRYSTAL LAYOUT, CRYSTALS NOT POSITIONED !!!" << std::endl;
@@ -3597,7 +3598,7 @@ namespace insur {
           vol[InnerSensor]  = 0;
           vol[OuterSensor]  = 0;
 
-          const double gap = 0.3; // gap space for both silicon sensor and thermal gap pad (not simulated) 0.5 mm
+          const double gap = 3.;
 
           double dx = expandedModWidth;  
           double dy = expandedModLength; 
@@ -3622,7 +3623,8 @@ namespace insur {
           dz = hybridThickness;
           posx = 0.;
           posy = 0.;
-          posz = posz + gap + hybridThickness ; 
+          // posz = posz + gap + hybridThickness ;
+          posz = posz + hybridThickness ;
           // Hybrid BackSide Volume
           vol[HybridBack] = new Volume(moduleId+"BSide",HybridBack,parentId,dx,dy,dz,posx,posy,posz);
 

@@ -1,0 +1,33 @@
+// Two Front-end hybrids, power hybrid and readout hybrid
+
+Component {
+  componentName "Timing BTL PCB front"
+  service false
+  scaleOnSensor 0
+  targetVolume 3
+  // POH CFRP support
+  Element {
+    elementName CFRP
+    quantity 2.436
+    unit g
+  }
+  // POH glue
+  Element {
+    elementName Epoxy
+    quantity 1.
+    unit g
+  }
+  // POH copper
+  Element {
+    elementName Cu
+    quantity 24.64
+    unit g
+  }
+  // POH board + components
+  Element {
+    elementName PS-ROH-mix
+    quantity 31.6
+    unit g
+  }
+}
+
