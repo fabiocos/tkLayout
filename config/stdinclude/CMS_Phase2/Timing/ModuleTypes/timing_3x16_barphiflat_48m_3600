@@ -40,7 +40,7 @@ Sensor 1 {
   
   crystalWidth  57.6
   crystalLength 3.15
-  crystalThickness 3.60
+  crystalThickness 3.75
   crystalTiltAngle 0.0 // rotation along X axis
   
   numStripsAcross 4    // TO DO : remove
