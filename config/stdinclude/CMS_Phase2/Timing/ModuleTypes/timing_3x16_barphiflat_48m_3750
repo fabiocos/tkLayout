@@ -1,6 +1,6 @@
 // Lindsey Gray version : Barrel Timing module
 
-moduleType timing_3x16_barphiflat_48m_2600 // timing modules should always have a type starting with keyword 'timing_'
+moduleType timing_3x16_barphiflat_48m_3600 // timing modules should always have a type starting with keyword 'timing_'
 
 sensorLayout mono
 
@@ -40,7 +40,7 @@ Sensor 1 {
   
   crystalWidth  57.6
   crystalLength 3.15
-  crystalThickness 2.60
+  crystalThickness 3.75
   crystalTiltAngle 0.0 // rotation along X axis
   
   numStripsAcross 4    // TO DO : remove
